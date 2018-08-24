@@ -9,6 +9,12 @@ var row1 = ["blank", "blank", "blank"];
 var row2 = ["blank", "blank", "blank"];
 var row3 = ["blank", "blank", "blank"];
 
+//board variable represent the board as a 2D array. 
+var board = [["blank", "blank", "blank"],
+            ["blank", "x", "blank"],
+            ["blank", "blank", "blank"]];
+
+
 var isConflict = false;
 var isWin = "";
 var currentPlayer = "Player 1";
@@ -22,11 +28,18 @@ var boardState= "";
 //boardToString prints out the board in a sentence for Alexa to read.
 function boardToString()
 {
-  var x;
-  boardState = "Row 1. ";
-  for (x in row1)
+  for(var i = 0; i < 3; i++)
   {
-    boardState = boardState + row1[x] + ". ";
+    boardState = boardState + "Row " + (i+1) + ". "
+    for(var k = 0; k < 3; k++)
+    {
+      boardState = boardState + board[i][k] + ". "
+    }
+  }
+
+  /*for (x in row1)
+  {
+    boardState = boardState + row1[x] board[1] + ". ";
   }
   boardState = boardState +". Row 2. ";
   for (x in row2)
@@ -37,8 +50,9 @@ function boardToString()
   for (x in row3)
   {
     boardState = boardState + row3[x] + ". ";
-  }
+  }*/
 }
+
 function updatePlayer(){
   if(currentPlayer == "Player 1")
    {  
