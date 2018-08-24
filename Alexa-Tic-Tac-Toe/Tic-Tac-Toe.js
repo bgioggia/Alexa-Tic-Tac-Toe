@@ -2,16 +2,9 @@
 
 var Alexa = require("alexa-sdk");
 
-//The board is split up into three arrays of values row1, row2, and row3. These will be
-//made into a two dimensional array in a later version, but are broken up now for easier
-//troubleshooting.
-var row1 = ["blank", "blank", "blank"];
-var row2 = ["blank", "blank", "blank"];
-var row3 = ["blank", "blank", "blank"];
-
 //board variable represent the board as a 2D array. 
 var board = [["blank", "blank", "blank"],
-            ["blank", "x", "blank"],
+            ["blank", "blank", "blank"],
             ["blank", "blank", "blank"]];
 
 
@@ -28,6 +21,7 @@ var boardState= "";
 //boardToString prints out the board in a sentence for Alexa to read.
 function boardToString()
 {
+  boardState = "";
   for(var i = 0; i < 3; i++)
   {
     boardState = boardState + "Row " + (i+1) + ". "
@@ -36,21 +30,6 @@ function boardToString()
       boardState = boardState + board[i][k] + ". "
     }
   }
-
-  /*for (x in row1)
-  {
-    boardState = boardState + row1[x] board[1] + ". ";
-  }
-  boardState = boardState +". Row 2. ";
-  for (x in row2)
-  {
-    boardState = boardState + row2[x] + ". ";
-  }
-  boardState = boardState + ". Row 3. ";
-  for (x in row3)
-  {
-    boardState = boardState + row3[x] + ". ";
-  }*/
 }
 
 function updatePlayer(){
@@ -76,32 +55,32 @@ function updatePlayer(){
 function changeBoard(position)
 {
   isConflict = false;
-  if((position == "top_right") && (row1[2] == "blank")) {  
-    row1[2] = currentShape;
+  if((position == "top_right") && (board[0][2] == "blank")) {  
+    board[0][2] = currentShape;
   }
-  else if((position == "top_middle") && (row1[1] == "blank")){
-    row1[1] = currentShape;
+  else if((position == "top_middle") && (board[0][1] == "blank")){
+    board[0][1] = currentShape;
   }
-  else if((position == "top_left") && (row1[0] == "blank")){
-    row1[0] = currentShape;
+  else if((position == "top_left") && (board[0][0] == "blank")){
+    board[0][0] = currentShape;
   }
-  else if((position == "middle_right") && (row2[2] == "blank")){  
-    row2[2] = currentShape;
+  else if((position == "middle_right") && (board[1][2] == "blank")){  
+    board[1][2] = currentShape;
   }
-  else if((position == "middle") && (row2[1] == "blank")){
-    row2[1] = currentShape;
+  else if((position == "middle") && (board[1][1] == "blank")){
+    board[1][1] = currentShape;
   }
-  else if((position == "middle_left") && (row2[0] == "blank")){
-    row2[0] = currentShape;
+  else if((position == "middle_left") && (board[1][0] == "blank")){
+    board[1][0] = currentShape;
   }
-  else if((position == "bottom_right") && (row3[2] == "blank")){  
-    row3[2] = currentShape;
+  else if((position == "bottom_right") && (board[2][2] == "blank")){  
+    board[2][2] = currentShape;
   }
-  else if((position == "bottom_middle") && (row3[1] == "blank")){
-    row3[1] = currentShape;
+  else if((position == "bottom_middle") && (board[2][1] == "blank")){
+    board[2][1] = currentShape;
   }
-  else if((position == "bottom_left") && (row3[0] == "blank")){
-    row3[0] = currentShape;
+  else if((position == "bottom_left") && (board[2][0] == "blank")){
+    board[2][0] = currentShape;
   }
   else
   {
@@ -113,37 +92,37 @@ function changeBoard(position)
 function testIfWin()
 {
 
-  if((row1[0] == row1[1]) && (row1[1] == row1[2]) && (row1[0] != "blank"))
+  if((board[0][0] == board[0][1]) && (board[0][1] ==board[0][2]) && (board[0][0] != "blank"))
   {
-    testIfWinHelper(row1[0], "on the top row.");
+    testIfWinHelper(board[0][0], "on the top row.");
   }
-  else if((row1[0] == row2[0]) && (row2[0] == row3[0]) && (row1[0] != "blank") )
+  else if((board[0][0] == board[1][0]) && (board[1][0] == board[2][0]) && (board[0][0] != "blank"))
   {
-    testIfWinHelper(row1[0], "on the left column.");
+    testIfWinHelper(board[0][0], "on the left column.");
   }
-  else if((row1[0] == row2[1]) && (row2[1] == row3[2]) && (row1[0] != "blank"))
+  else if((board[0][0] == board[1][1]) && (board[1][1] == board[2][2]) && (board[0][0] != "blank"))
   {
-    testIfWinHelper(row1[0], "on the diagonal from the top left to the bottom right.");
+    testIfWinHelper(board[0][0], "on the diagonal from the top left to the bottom right.");
   }
-  else if((row1[1] == row2[1]) && (row2[1] == row3[1]) && (row1[1] != "blank"))
+  else if((board[0][1] == board[1][1]) && (board[1][1] == board[2][1]) && (board[0][1] != "blank"))
   {
-    testIfWinHelper(row1[1], "on the middle column.");
+    testIfWinHelper(board[0][1], "on the middle column.");
   }
-  else if((row1[2] == row2[2]) && (row2[2] == row3[2]) && (row1[2] != "blank"))
+  else if((board[0][2] == board[1][2]) && (board[1][2] == board[2][2]) && (board[0][2] != "blank"))
   {
-    testIfWinHelper(row1[2], "on the right column.");
+    testIfWinHelper(board[0][2], "on the right column.");
   }
-  else if((row2[0] == row2[1]) && (row2[1] == row2[2]) && (row3[0] != "blank"))
+  else if((board[1][0] == board[1][1]) && (board[1][1] == board[1][2]) && (board[2][0] != "blank"))
   {
-    testIfWinHelper(row2[0], "on the middle row.");
+    testIfWinHelper(board[1][0], "on the middle row.");
   }
-  else if((row3[0] == row3[1]) && (row3[1] == row3[2]) && (row3[0] != "blank"))
+  else if((board[2][0] == board[2][1]) && (board[2][1] == board[2][2]) && (board[2][0] != "blank"))
   {
-    testIfWinHelper(row3[0], "on the bottom row.");
+    testIfWinHelper(board[2][0], "on the bottom row.");
   }
-  else if((row3[0] == row2[1]) && (row2[1] == row1[2]) && (row3[0] != "blank"))
+  else if((board[2][0] == board[1][1]) && (board[1][1] ==board[0][2]) && (board[2][0] != "blank"))
   {
-    testIfWinHelper(row3[0], "on the diagonal from the top right to bottom left.");
+    testIfWinHelper(board[2][0], "on the diagonal from the top right to bottom left.");
   }
   else
   {
@@ -167,6 +146,11 @@ function testIfWinHelper(shape, line)
 
 var handlers = {
   //Handler for app startup
+  'AMAZON.FallbackIntent': function(){
+    this.response.speak("I didn't understand that, please try again.").listen("Please try again").listen("");
+    this.emit(':responseReady');
+  },
+  
   'LaunchRequest': function() {
     this.response.speak("Welcome to Tic Tac Toe! Would you like to start a new game?").listen("What would you like to do?");
     this.emit(':responseReady');
@@ -177,9 +161,9 @@ var handlers = {
   {
     currentPlayer = "Player 1";
     currentShape = "o";
-    row1 = ["blank", "blank", "blank"];
-    row2 = ["blank", "blank", "blank"];
-    row3 = ["blank", "blank", "blank"];
+    board = [["blank", "blank", "blank"],
+            ["blank", "blank", "blank"],
+            ["blank", "blank", "blank"]];
     this.response.speak("New game started. Player one starts with X").listen("Player 1 Please go.");
     this.emit(":responseReady");
   },
@@ -187,6 +171,10 @@ var handlers = {
   //Handler for adding X's and O's to the board
   'MakeMove': function()
   {
+    if (this.event.request.intent.slots.position.value == null){
+      this.response.speak("Please choose a valid board position.").listen("Say a board position. ");
+      this.emit(":responseReady");
+    }
     updatePlayer();
     requestedPosition = this.event.request.intent.slots.position.resolutions.resolutionsPerAuthority[0].values[0].value.id;
     changeBoard(requestedPosition);
@@ -214,7 +202,7 @@ var handlers = {
   'ReadBoard': function()
   {
     boardToString();
-    this.response.speak(boardState);
+    this.response.speak(boardState).listen("").listen("");
     this.emit(":responseReady");
   },
 };
