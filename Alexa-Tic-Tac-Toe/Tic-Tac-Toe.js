@@ -62,31 +62,31 @@ function updatePlayer(){
 function changeBoard(position)
 {
   isConflict = false;
-  if((position == "top right") && (row1[2] == "blank")) {  
+  if((position == "top_right") && (row1[2] == "blank")) {  
     row1[2] = currentShape;
   }
-  else if((position == "top middle") && (row1[1] == "blank")){
+  else if((position == "top_middle") && (row1[1] == "blank")){
     row1[1] = currentShape;
   }
-  else if((position == "top left") && (row1[0] == "blank")){
+  else if((position == "top_left") && (row1[0] == "blank")){
     row1[0] = currentShape;
   }
-  else if((position == "middle right") && (row2[2] == "blank")){  
+  else if((position == "middle_right") && (row2[2] == "blank")){  
     row2[2] = currentShape;
   }
   else if((position == "middle") && (row2[1] == "blank")){
     row2[1] = currentShape;
   }
-  else if((position == "middle left") && (row2[0] == "blank")){
+  else if((position == "middle_left") && (row2[0] == "blank")){
     row2[0] = currentShape;
   }
-  else if((position == "bottom right") && (row3[2] == "blank")){  
+  else if((position == "bottom_right") && (row3[2] == "blank")){  
     row3[2] = currentShape;
   }
-  else if((position == "bottom middle") && (row3[1] == "blank")){
+  else if((position == "bottom_middle") && (row3[1] == "blank")){
     row3[1] = currentShape;
   }
-  else if((position == "bottom left") && (row3[0] == "blank")){
+  else if((position == "bottom_left") && (row3[0] == "blank")){
     row3[0] = currentShape;
   }
   else
@@ -174,7 +174,7 @@ var handlers = {
   'MakeMove': function()
   {
     updatePlayer();
-    requestedPosition = this.event.request.intent.slots.position.value;
+    requestedPosition = this.event.request.intent.slots.position.resolutions.resolutionsPerAuthority[0].values[0].value.id;
     changeBoard(requestedPosition);
     testIfWin();
     if(isConflict)
@@ -185,6 +185,7 @@ var handlers = {
     }
     if(isWin == "no wins")
     {
+      requestedPosition = requestedPosition.replace("_", " ");
       this.response.speak("I have added an " + currentShape + " to " + requestedPosition + ". " + currentPlayer + " please make your move.").listen("test").listen(currentPlayer + " please make your move.");
       this.emit(":responseReady");
     }
@@ -201,7 +202,6 @@ var handlers = {
     boardToString();
     this.response.speak(boardState);
     this.emit(":responseReady");
-    this.shouldEndSession = false;
   },
 };
 
